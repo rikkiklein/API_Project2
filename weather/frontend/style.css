@@ -1,0 +1,41 @@
+body {
+  font-family: 'Lato', sans-serif;
+  padding: 50px;
+  background: url("")
+}
+
+img{
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: 3px solid rgba(0,0,0, .13);
+ }
+
+#go-button,
+.my-btn {
+  border: 1px solid black;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.appended-response {
+  color: red;
+}
+
+.glyphicon-heart {
+  font-size: 25px;
+}
+
+#backgrounds{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#img-containerID{
+  padding: 1em;
+  width: 30vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+
+}
