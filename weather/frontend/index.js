@@ -68,7 +68,28 @@ function determineBackground(response){
       console.log("button was pressed for", parent);
       console.log("child", childImg);
 
-      body.style.background="url("+childImg+")" ;
+      var reg = "linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), ";
+      var moz = "-moz-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), ";
+      var webkit = "-webkit-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), ";
+      var ms = "-ms-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), ";
+
+      var second = "url("+childImg+")"
+      body.style.background=reg + second;
+      body.style.background=moz + second;
+      body.style.background=webkit + second;
+      body.style.background=ms + second;
+      body.style.backgroundSize="cover";
+      body.style.backgroundPosition = "center";
+      body.style.backgroundRepeat = "no-repeat";
+      body.style.backgroundAttachment = "fixed"
+
+	// background-image: -webkit-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("../../images/banner.jpg");
+	// background-image: -ms-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("../../images/banner.jpg");
+	// background-image: linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("../../images/banner.jpg");
+	// background-size: cover, cover;
+	// background-position: center, center;
+	// background-repeat: repeat, no-repeat;
+	// background-attachment: fixed;
     })
   }
 }

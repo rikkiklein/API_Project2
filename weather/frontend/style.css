@@ -5,10 +5,10 @@ body {
 }
 
 img{
-  height: 100%;
-  width: 100%;
+  height: 90%;
+  width: 90%;
   border-radius: 5px;
-  border: 3px solid rgba(0,0,0, .13);
+  border: 3px solid rgba(255,255,255, .513);
  }
 
 #go-button,
@@ -28,7 +28,13 @@ img{
 
 #backgrounds{
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  background: rgba(255,255, 255, .4);
+  border-radius: 5px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border: 3px solid white;
 }
 
 #img-containerID{
@@ -36,6 +42,25 @@ img{
   width: 30vw;
   height: 50vh;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+
+
+}
+
+button{
+  background: rgba(255,255,255, .9);
+  border-radius: 5px;
+  padding: .5em;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-top: 2%;
+  border: 1px solid rgba(255,255,255, .513);
+
+}
+
+button:hover{
+    border: 1px solid #ff6666;
+    background: rgba(255,255,255, .7);
 
 }
