@@ -7,6 +7,11 @@ body{
   background: -webkit-linear-gradient(to left, #948E99 , #2E1437); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to left, #948E99 , #2E1437); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+
+  background: #485563; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #485563 , #29323c); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #485563 , #29323c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 h2{
@@ -74,7 +79,7 @@ img{
   border: 3px solid red;
   padding-bottom: 2.5em;
   margin: 1.5%;
-  border: 2px solid rgba(86,86,86, .64);
+  border: 2px solid rgba(255,255,255, .64);
   border-radius: 5px;
   background: rgba(255,255, 255, .4);
 
@@ -142,8 +147,4 @@ button:hover{
   border-left: 1px solid rgba(255,255,255,.897);
 
 
-}
-
-.glyphicon-heart{
-  color: red;
 }
