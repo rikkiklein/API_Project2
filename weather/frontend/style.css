@@ -43,6 +43,10 @@ input{
   color: gray;
   border: 1px solid transparent;
   border-radius: 5px 0px 0px 5px;
+   border-top: 3px solid rgba(255,255,255, .3);
+   border-bottom: 3px solid rgba(255,255,255, .3);
+   border-left:  1px solid rgba(255,255,255, .3);
+
 
 }
 
@@ -92,10 +96,16 @@ img{
   color: white;
   font-size: 1.5em;
   border: 1px solid transparent;
-  padding: .42em;
+  padding: .4em;
+  padding-bottom: .6em;
   cursor: pointer;
   background: gray;
   border-radius: 0px 5px 5px 0px;
+   border-bottom: 1px solid rgba(255,255,255, .3);
+   border-top: 2px solid rgba(255,255,255, .3);
+   border-right:  1px solid rgba(255,255,255, .3);
+
+
 }
 
 button{
@@ -145,6 +155,14 @@ button:hover{
   width: 80vw;
   padding: 3em;
   border-left: 1px solid rgba(255,255,255,.897);
+  background: url("back.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-image: -moz-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("back.jpg");
+	background-image: -webkit-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("back.jpg");
+	background-image: -ms-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("back.jpg");
+	background-image: linear-gradient(to top, rgba(66, 66, 66, 0.65417), rgba(66, 66, 66, 0.65417)), url("back.jpg");
 
 
 }

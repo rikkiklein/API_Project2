@@ -2,7 +2,7 @@ window.onload = function() {
 
   var searchBox = document.getElementById('search-box');
   var searchBoxDiv = document.getElementById('search-box-div');
-  var searchBtn = document.getElementById('search-btn');
+  var searchBtn = document.getElementById('search-glass');
   var backgrounds = document.getElementById('backgrounds');
   var results = document.getElementById("results");
   var body =document.getElementById("body");
@@ -138,8 +138,8 @@ function set_background(childImg){
   right.style.background=moz + second;
   right.style.background=webkit + second;
   right.style.background=ms + second;
-  right.style.backgroundSize="cover";
-  right.style.backgroundPosition = "center center";
+  right.style.backgroundSize="cover, cover";
+  right.style.backgroundPosition = "center";
   right.style.backgroundRepeat = "no-repeat";
   right.style.backgroundAttachment = "fixed"
 }

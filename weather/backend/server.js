@@ -27,17 +27,17 @@ app.get('/images', function(req, response) {
 
 
 
-/* marvel search */
+/* places search weather*/
 app.post('/places/search', function(req, res) {
-
   var baseUrl = "http://api.openweathermap.org/data/2.5/weather";
   var tsQueryString = '?q=';
   var apiKeyQueryString = "&appid=";
   var WEATHER_KEY=process.env.WEATHER_KEY;
   console.log(WEATHER_KEY, "weather");
   var queryString = req.body.queryString;
+  var metric = "&units=metric";
 
-  var fullQuery = baseUrl + tsQueryString + queryString + apiKeyQueryString + WEATHER_KEY;
+  var fullQuery = baseUrl + tsQueryString + queryString + metric + apiKeyQueryString + WEATHER_KEY;
 
   console.log("fullQuery:", fullQuery); // prints to terminal
 
@@ -51,6 +51,7 @@ app.post('/places/search', function(req, res) {
 
 });
 
+//image search
 app.post('/images/search', function(req, res){
   var baseURL = "https://pixabay.com/api/"
   console.log("IN POST IMAGES");
