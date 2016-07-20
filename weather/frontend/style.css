@@ -1,7 +1,50 @@
-body {
-  font-family: 'Lato', sans-serif;
-  padding: 50px;
-  background: url("")
+body{
+  margin: 0 auto;
+  display: block;
+  justify-content: center;
+  font-family: helvetica;
+  background: #948E99; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #948E99 , #2E1437); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #948E99 , #2E1437); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+h2{
+  padding-bottom: 1%;
+  border-bottom: 3px solid rgba(255,255, 255, .3);
+  width: 50%;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+h3{
+  color: white;
+  width: 50%;
+  text-align: center;
+}
+
+li{
+  list-style: none;
+  text-align: justify;
+  margin-top: 12%;
+}
+
+input{
+  width: 60%;
+  padding: 1em;
+  margin-top: 5%;
+  color: gray;
+  border: 1px solid transparent;
+  border-radius: 5px 0px 0px 5px;
+
+}
+
+label{
+  color: gray;
+  padding: 1em;
+
 }
 
 img{
@@ -11,56 +54,96 @@ img{
   border: 3px solid rgba(255,255,255, .513);
  }
 
-#go-button,
-.my-btn {
-  border: 1px solid black;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.appended-response {
-  color: red;
-}
-
-.glyphicon-heart {
-  font-size: 25px;
-}
-
-#backgrounds{
+#backgrounds, #results{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  background: rgba(255,255, 255, .4);
+  justify-content: center;
   border-radius: 5px;
-  padding-top: 1em;
-  padding-bottom: 1em;
-  border: 3px solid white;
+  padding: 1em;
+  width: 100%;
 }
 
 #img-containerID{
   padding: 1em;
-  width: 30vw;
-  height: 50vh;
+  width: 15vw;
+  height: 27vh;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  border: 3px solid red;
+  padding-bottom: 2.5em;
+  margin: 1.5%;
+  border: 2px solid rgba(86,86,86, .64);
+  border-radius: 5px;
+  background: rgba(255,255, 255, .4);
 
 
 }
 
+#search-glass{
+  background: transparent;
+  width: auto;
+  color: white;
+  font-size: 1.5em;
+  border: 1px solid transparent;
+  padding: .42em;
+  cursor: pointer;
+  background: gray;
+  border-radius: 0px 5px 5px 0px;
+}
+
 button{
-  background: rgba(255,255,255, .9);
+  background: rgba(255,255,255, .89);
   border-radius: 5px;
-  padding: .5em;
+  padding: .6em;
   text-transform: uppercase;
   letter-spacing: .07em;
   margin-top: 2%;
-  border: 1px solid rgba(255,255,255, .513);
+  margin-right: 2%;
+  border: 1px solid #FF9999;
+  width: 45%;
+  font-size: .7em;
+  color: gray;
 
 }
 
 button:hover{
     border: 1px solid #ff6666;
-    background: rgba(255,255,255, .7);
+    background: rgba(255,255,255, .97);
 
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: row;
+}
+
+.left, .right{
+  text-align: center;
+  color: white;
+  /*display: flex;
+  flex-wrap: wrap;*/
+}
+
+.left{
+  width: 20vw;
+  padding: 1em;
+  padding-top: 10em;
+  height: 100vh;
+  border-right: 1px solid rgba(255,255,255,.897);
+
+}
+
+
+.right{
+  width: 80vw;
+  padding: 3em;
+  border-left: 1px solid rgba(255,255,255,.897);
+
+
+}
+
+.glyphicon-heart{
+  color: red;
 }

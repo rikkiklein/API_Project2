@@ -4,20 +4,39 @@ window.onload = function() {
   var searchBoxDiv = document.getElementById('search-box-div');
   var searchBtn = document.getElementById('search-btn');
   var backgrounds = document.getElementById('backgrounds');
+  var results = document.getElementById("results");
   var body =document.getElementById("body");
-  console.log(backgrounds);
-
+  var right = document.getElementById("right");
+  var highestLikes = 0;
+  var highestLikesUrl = "";
+  var highestFavs = 0;
+  var highestFavsUrl = "";
   var url = 'http://localhost:3000';
 
+  function hide(){
+    results.style.display = "none";
+    backgrounds.style.display = "none";
+  }
+
+  hide();
+
+  function show(){
+    results.style.display = "flex";
+    backgrounds.style.display = "flex";
+  }
   searchBtn.addEventListener('click', function(ev) {
+    show();
     ev.preventDefault();
+    backgrounds.innerHTML = "";
+    results.innerHTML = "";
 
     var placeSearch = searchBox.value;
-
     var data = {
       queryString: placeSearch
     };
     console.log("data is", data);
+
+    //places
     $.ajax({
       url: url + '/places/search',
       method: 'POST',
@@ -41,57 +60,88 @@ window.onload = function() {
   }); // end search btn
 
 function determineBackground(response){
-  console.log("res in determine", response);
+  console.log("####IN DETERMINE BK FX#########");
+  console.log("response", response);
   var resHits = response.hits;
-  console.log("response.hits", resHits);
   var resHitsLen = resHits.length;
-  console.log("resHitsLen", resHitsLen);
-  for(var i = 0; i < resHitsLen; i++){
-    console.log(resHits[i]);
-    console.log(resHits[i].pageURL);
-    var imgContainer = document.createElement('div');
-    imgContainer.id="img-containerID"
-    backgrounds.appendChild(imgContainer)
-    var pic = resHits[i].webformatURL;
-    var img = document.createElement('img');
-    img.src = pic;
-    var button = document.createElement("button");
-    button.id = "makeBack";
-    button.innerText = "make background"
-    imgContainer.appendChild(img);
-    imgContainer.appendChild(button);
-    button.addEventListener("click", function(){
-      var parent = $(this).parent();
-      console.log(parent);
-      var childImg = parent[0].children[0].src;
-      console.log("child", childImg);
-      console.log("button was pressed for", parent);
-      console.log("child", childImg);
-
-      var reg = "linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), ";
-      var moz = "-moz-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), ";
-      var webkit = "-webkit-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), ";
-      var ms = "-ms-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), ";
-
-      var second = "url("+childImg+")"
-      body.style.background=reg + second;
-      body.style.background=moz + second;
-      body.style.background=webkit + second;
-      body.style.background=ms + second;
-      body.style.backgroundSize="cover";
-      body.style.backgroundPosition = "center";
-      body.style.backgroundRepeat = "no-repeat";
-      body.style.backgroundAttachment = "fixed"
-
-	// background-image: -webkit-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("../../images/banner.jpg");
-	// background-image: -ms-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("../../images/banner.jpg");
-	// background-image: linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("../../images/banner.jpg");
-	// background-size: cover, cover;
-	// background-position: center, center;
-	// background-repeat: repeat, no-repeat;
-	// background-attachment: fixed;
-    })
+  highestLikes = 0;
+  highestFavs = 0;
+  console.log("response.totalH", response.totalHits);
+  if(response.totalHits < 1){
+    backgrounds.innerHTML = "SORRY THERE ARE NO IMAGES WITH THAT CRITERIA, TRY AGAIN..."
   }
+  else{
+    for(var i = 0; i < resHitsLen; i++){
+      if(resHits[i].likes > highestLikes){
+        highestLikes = resHits[i].likes;
+        highestLikesUrl = resHits[i].webformatURL;
+      }
+      if(resHits[i].favorites > highestFavs){
+        highestFavs = resHits[i].favorites;
+        highestFavsUrl = resHits[i].webformatURL;
+      }
+      set_background(highestFavsUrl);
+
+      var imgContainer = document.createElement('div');
+      imgContainer.id="img-containerID"
+      backgrounds.appendChild(imgContainer)
+
+      var img = document.createElement('img');
+      var pic = resHits[i].webformatURL;
+      img.src = pic;
+      img.id = "img-id";
+
+      var button = document.createElement("button");
+      button.id = "makeBack";
+      button.className = "glyphicon glyphicon-plus"
+      button.innerText = "make back"
+
+      var add = document.createElement("button");
+      add.id = "add";
+      add.className="glyphicon glyphicon-heart";
+      add.innerText = "Favorite"
+
+      imgContainer.appendChild(img);
+      imgContainer.appendChild(button);
+      imgContainer.appendChild(add);
+
+      // img.addEventListener("mouseover", function(){
+      //   console.log("MOUSE OVER IMAGE");
+      //   var parent = $(this).parent();
+      //   console.log("in mouse, parent", parent);
+      //   var childImg = parent[0].children[0].src;
+      //   // set_background(childImg);
+      // }) //imglistener
+
+      button.addEventListener("click", function(){
+        console.log("BACKGROUND BUTTON WAS PRESSED");
+        var parent = $(this).parent();
+        var childImg = parent[0].children[0].src;
+        set_background(childImg);
+      }) //button listener
+
+      add.addEventListener("click", function(){
+        console.log("ADD TO FAVS BUTTON WAS PRESSED");
+        //add to favorites
+      }) //button listener
+    } //end for loop
+  }//end else
+} //end funx
+
+function set_background(childImg){
+  var reg = "linear-gradient(to top, rgba(186, 186, 186, 0.47), rgba(86, 86, 86, 0.7)), ";
+  var moz = "-moz-linear-gradient(to top, rgba(186, 186, 186, 0.47), rgba(86, 86, 86, 0.7)), ";
+  var webkit = "-webkit-linear-gradient(to top, rgba(186, 186, 186, 0.47), rgba(86, 86, 86, 0.7)), ";
+  var ms = "-ms-linear-gradient(to top, rgba(186, 186, 186, 0.47), rgba(86, 86, 86, 0.7)), ";
+  var second = "url("+childImg+")"
+  right.style.background=reg + second;
+  right.style.background=moz + second;
+  right.style.background=webkit + second;
+  right.style.background=ms + second;
+  right.style.backgroundSize="cover";
+  right.style.backgroundPosition = "center center";
+  right.style.backgroundRepeat = "no-repeat";
+  right.style.backgroundAttachment = "fixed"
 }
 
 function display(response){
@@ -102,7 +152,7 @@ function display(response){
         console.log("main is", response[key]);
         var div = document.createElement('div');
         div.innerHTML = "<b>"+ key + ":</b><br>";
-        all.appendChild(div);
+        results.appendChild(div);
         var outerIndex = response[key];
         console.log(key, "outerIndex", outerIndex);
           for(var inner in outerIndex){
@@ -128,14 +178,14 @@ function display(response){
       case "name":
         var div = document.createElement('div');
         div.innerHTML = "<br>"+"<b>"+ key + ":</b><br>";
-        all.appendChild(div);
+        results.appendChild(div);
         div.innerHTML +=response[key];
         break;
       case "weather":
         console.log("weather is", response[key]);
         var div = document.createElement('div');
         div.innerHTML = "<br>"+"<b>"+ key + ":</b><br>";
-        all.appendChild(div);
+        results.appendChild(div);
         var outerIndex = response[key];
         var innerIndex = outerIndex[0];
         console.log("innerindex", innerIndex);
@@ -161,27 +211,4 @@ function display(response){
     }
   }
 }
-
-  //   console.log("key is", key);
-  //   if(typeof(response[key])==='object'){
-  //     console.log("inside if: key, ", key);
-  //     console.log("key is an object", key);
-  //     var objectKey = response[key];
-  //     for(var val in objectKey){
-  //       console.log("obj[val]", objectKey[val]);
-  //       var p = document.createElement('p');
-  //       p.innerHTML = "<b>" +key + " " +  val + "</b>: " + " " + objectKey[val];
-  //       all.appendChild(p);
-  //     }
-  //
-  //   }
-  //   console.log(response[key]);
-  //   var p = document.createElement('p');
-  //   p.innerHTML = "<b>" + key + "</b>: " + " " + response[key];
-  //   all.appendChild(p);
-  // }
-
-
-  // The rest is the same as the original marvel lab solution //
-
 }; // end window onload fxn

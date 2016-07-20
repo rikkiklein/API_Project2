@@ -8,20 +8,32 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body id="body">
+  <div class="wrapper">
+    <div class="left">
+      <h3>MENU:</h3>
+      <ul>
+        <li>HOME</li>
+        <li id="favs-place">MY FAVORITE PLACES</li>
+        <li id="favs-image">MY FAVORITE IMAGES</li>
+      </ul>
+    </div>
+    <div class="right" id="right">
+      <h2>WEATHER API</h2>
+      <div id="search-box-div">
+        <input id="search-box" type="text" placeholder="Search place to find out the weather" size="75" /><button type="button" name="button" id="search-glass"><span class="my-btn glyphicon glyphicon-search" id="search-btn"> </span></button>
+      </div>
+
+      <div class="results" id="results">
+
+      </div>
+
+      <div class="backgrounds" id="backgrounds">
+
+      </div>
+    </div>
+  </div>
 
 
-  <h1>WEATHER API</h1>
-  <div id="search-box-div">
-    <label>Search:
-      <input id="search-box" type="text" placeholder="Search place to find out the weather" size="75" />
-    </label>
-    <span class="my-btn" id="search-btn">Search <span class="glyphicon glyphicon-search"></span></span>
-  </div>
-  <div id="all">
-  </div>
-  <div class="backgrounds" id="backgrounds">
-
-  </div>
 
 <!-- CDNs -->
 <script src="https://code.jquery.com/jquery-2.2.1.min.js" charset="utf-8"></script>
