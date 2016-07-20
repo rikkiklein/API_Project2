@@ -163,6 +163,9 @@ button:hover{
 	background-image: -webkit-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("back.jpg");
 	background-image: -ms-linear-gradient(to top, rgba(86, 86, 86, 0.7), rgba(86, 86, 86, 0.7)), url("back.jpg");
 	background-image: linear-gradient(to top, rgba(66, 66, 66, 0.65417), rgba(66, 66, 66, 0.65417)), url("back.jpg");
+}
 
-
+#home{
+  cursor: pointer;
+  window.onload();
 }

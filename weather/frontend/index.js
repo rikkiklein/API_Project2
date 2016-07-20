@@ -5,8 +5,9 @@ window.onload = function() {
   var searchBtn = document.getElementById('search-glass');
   var backgrounds = document.getElementById('backgrounds');
   var results = document.getElementById("results");
-  var body =document.getElementById("body");
+  var body = document.getElementById("body");
   var right = document.getElementById("right");
+  var home = document.getElementById("home");
   var highestLikes = 0;
   var highestLikesUrl = "";
   var highestFavs = 0;
@@ -24,6 +25,12 @@ window.onload = function() {
     results.style.display = "flex";
     backgrounds.style.display = "flex";
   }
+
+  home.addEventListener("click", function(ev){
+    ev.preventDefault();
+    console.log("home was pressed");
+    location.reload();
+  })
   searchBtn.addEventListener('click', function(ev) {
     show();
     ev.preventDefault();

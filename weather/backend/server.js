@@ -63,7 +63,7 @@ app.post('/images/search', function(req, res){
   var queryString = req.body.queryString;
   console.log(queryString, "QS");
   var image_type = "&image_type=photo&pretty=true";
-  var cat = "&category=nature";
+  var cat = "&category=places";
 
   var fullQuery = baseURL + key + PIX_KEY + qString + queryString + image_type + cat;
   console.log("FQ", fullQuery);
