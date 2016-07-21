@@ -8,10 +8,14 @@ window.onload = function() {
   var body                = document.getElementById("body");
   var right               = document.getElementById("right");
   var home                = document.getElementById("home");
+  var favsPlace           = document.getElementById("favs-place");
+  var favsImage           = document.getElementById("favs-image");
+  var favsPlaceClear      = document.getElementById("favs-place-clear");
+  var favsImageClear      = document.getElementById("favs-image-clear");
   var nameContainer       = document.getElementById("results-name");
   var tempContainer       = document.getElementById("results-temp");
   var flexMain            = document.getElementById("flex-main");
-  var desMainContainer    = document.getElementById("results-desMain");
+
   var highestLikes = 0;
   var highestLikesUrl = "";
   var highestFavs = 0;
@@ -22,21 +26,79 @@ window.onload = function() {
   function hide(){
     results.style.display = "none";
     results.innerHTML = "";
+    nameContainer.innerHTML = "";
+    tempContainer.innerHTML = "";
+    flexMain.innerHTML = "";
     backgrounds.style.display = "none";
   }
-
-  hide();
 
   function show(){
     results.style.display = "flex";
     backgrounds.style.display = "flex";
   }
+  hide();
 
   home.addEventListener("click", function(ev){
     ev.preventDefault();
-    console.log("home was pressed");
     location.reload();
   })
+
+  favsImage.addEventListener("click", function(ev){
+    console.log("favsImage was pressed");
+    ev.preventDefault();
+    $.ajax({
+      url: url + '/images/favorites',
+      method: 'GET',
+      dataType: 'json'
+    }).done(function(response) {
+      console.log( "response:", response );
+      display(response);
+    }); // end ajax
+  })
+
+  favsPlace.addEventListener("click", function(ev){
+    console.log("favsPlace was pressed");
+    ev.preventDefault();
+    $.ajax({
+      url: url + '/places/favorites',
+      method: 'GET',
+      dataType: 'json'
+    }).done(function(response) {
+      console.log( "response:", response );
+      display(response);
+    }); // end ajax
+  })
+
+  favsImageClear.addEventListener("click", function(ev){
+    ev.preventDefault();
+    var permission = prompt("Are you sure you want to clear your favorite images? Y/N");
+    if(permission.toLowerCase() == "y"){
+      $.ajax({
+        url: url + '/images/favorites',
+        method: 'DELETE',
+        dataType: 'json'
+      }).done(function(response) {
+        console.log( "response:", response );
+        display(response);
+      }); // end ajax
+    }
+  })
+
+  favsPlaceClear.addEventListener("click", function(ev){
+    ev.preventDefault();
+    var permission = prompt("Are you sure you want to clear your favorite images? Y/N");
+    if(permission.toLowerCase() == "y"){
+      $.ajax({
+        url: url + '/places/favorites',
+        method: 'DELETE',
+        dataType: 'json'
+      }).done(function(response) {
+        console.log( "response:", response );
+        display(response);
+      }); // end ajax
+    }
+  })
+
   searchBtn.addEventListener('click', function(ev) {
     hide();
     show();
@@ -45,12 +107,11 @@ window.onload = function() {
     results.innerHTML = "";
 
     var placeSearch = searchBox.value;
+
     var data = {
       queryString: placeSearch
     };
-    console.log("data is", data);
 
-    //places
     $.ajax({
       url: url + '/places/search',
       method: 'POST',
@@ -61,7 +122,6 @@ window.onload = function() {
       display(response);
     }); // end ajax
 
-    //images
     $.ajax({
       url: url + '/images/search',
       method: 'POST',
@@ -73,80 +133,78 @@ window.onload = function() {
     }); // end ajax
   }); // end search btn
 
-function determineBackground(response){
-  var resHits = response.hits;
-  var resHitsLen = resHits.length;
-  highestLikes = 0;
-  highestFavs = 0;
-  if(response.totalHits < 1){
-    backgrounds.innerHTML = "SORRY THERE ARE NO IMAGES WITH THAT CRITERIA, TRY AGAIN..."
-  }
-  else{
-    for(var i = 0; i < resHitsLen; i++){
-      if(resHits[i].likes > highestLikes){
-        highestLikes = resHits[i].likes;
-        highestLikesUrl = resHits[i].webformatURL;
-      }
-      if(resHits[i].favorites > highestFavs){
-        highestFavs = resHits[i].favorites;
-        highestFavsUrl = resHits[i].webformatURL;
-      }
-
-      set_background(highestLikesUrl);
-
-      var imgContainer = document.createElement('div');
-      imgContainer.id="img-containerID"
-      backgrounds.appendChild(imgContainer)
-
-      var img = document.createElement('img');
-      var pic = resHits[i].webformatURL;
-      img.src = pic;
-      img.id = "img-id";
-
-      var button = document.createElement("button");
-      button.id = "makeBack";
-      button.className = "glyphicon glyphicon-plus"
-      button.innerText = "make back"
-
-      var add = document.createElement("button");
-      add.id = "add";
-      add.className="glyphicon glyphicon-heart";
-      add.innerText = "Favorite"
-
-      imgContainer.appendChild(img);
-      imgContainer.appendChild(button);
-      imgContainer.appendChild(add);
-
-      button.addEventListener("click", function(){
-        console.log("BACKGROUND BUTTON WAS PRESSED");
-        var parent = $(this).parent();
-        var childImg = parent[0].children[0].src;
-        set_background(childImg);
-      }) //button listener
-
-      add.addEventListener("click", function(){
-        console.log("ADD TO FAVS BUTTON WAS PRESSED");
-        var parent = $(this).parent();
-        console.log("parent in fav is", parent);
-        var dataImg = parent[0].children[0].currentSrc;
-        console.log(dataImg, "dataImg");
-        var data= {
-          imgURL: dataImg
+  function determineBackground(response){
+    var resHits = response.hits;
+    var resHitsLen = resHits.length;
+    highestLikes = 0;
+    highestFavs = 0;
+    if(response.totalHits < 1){
+      backgrounds.innerHTML = "SORRY THERE ARE NO IMAGES WITH THAT CRITERIA, TRY AGAIN..."
+    }
+    else{
+      for(var i = 0; i < resHitsLen; i++){
+        if(resHits[i].likes > highestLikes){
+          highestLikes = resHits[i].likes;
+          highestLikesUrl = resHits[i].webformatURL;
         }
-        console.log("data", data);
+        if(resHits[i].favorites > highestFavs){
+          highestFavs = resHits[i].favorites;
+          highestFavsUrl = resHits[i].webformatURL;
+        }
 
-        $.ajax({
-          url: url + '/images/favorites',
-          method: 'POST',
-          data: data,
-          dataType: 'json'
-        }).done(function(response) {
-          console.log( "response: from adding to favorites", response );
-        }); // end ajax
-      }); // end add btn
-    } //end for loop
-  }//end else
-} //end funx
+        set_background(highestLikesUrl);
+
+        var imgContainer = document.createElement('div');
+        imgContainer.id="img-containerID"
+        backgrounds.appendChild(imgContainer)
+
+        var img = document.createElement('img');
+        var pic = resHits[i].webformatURL;
+        img.src = pic;
+        img.id = "img-id";
+
+        var button = document.createElement("button");
+        button.id = "makeBack";
+        button.className = "glyphicon glyphicon-plus"
+        button.innerText = "make back"
+
+        var add = document.createElement("button");
+        add.id = "add";
+        add.className="glyphicon glyphicon-heart";
+        add.innerText = "Favorite"
+
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(button);
+        imgContainer.appendChild(add);
+
+        button.addEventListener("click", function(){
+          console.log("BACKGROUND BUTTON WAS PRESSED");
+          var parent = $(this).parent();
+          var childImg = parent[0].children[0].src;
+          set_background(childImg);
+        }) //button listener
+
+        add.addEventListener("click", function(){
+          var parent = $(this).parent();
+
+          var dataImg = parent[0].children[0].currentSrc;
+
+          var data= {
+            imgURL: dataImg
+          }
+
+          $.ajax({
+            url: url + '/images/favorites',
+            method: 'POST',
+            data: data,
+            dataType: 'json'
+          }).done(function(response) {
+            console.log( "response: from adding to favorites", response );
+          }); // end ajax
+        }); // end add btn
+      } //end for loop
+    }//end else
+  } //end funx
 
   function set_background(childImg){
     var reg = "linear-gradient(to top, rgba(186, 186, 186, 0.47), rgba(86, 86, 86, 0.7)), ";
@@ -179,28 +237,29 @@ function determineBackground(response){
             for(var inner in outerIndex){
               switch (inner) {
                 case "temp":
-                    main.innerHTML+="Temperature is: " + outerIndex[inner] + "˚<br>";
-                    var temp = document.createElement("div");
-                    temp.id = "tempid";
-                    temp.innerHTML=outerIndex[inner] + "˚";
-                    tempContainer.appendChild(temp);
-                    flexMain.appendChild(tempContainer);
-                    results.appendChild(flexMain);
+                  main.innerHTML+="Temperature is: " + outerIndex[inner] + "˚<br>";
+                  var temp = document.createElement("div");
+                  temp.id = "tempid";
+                  temp.innerHTML=outerIndex[inner] + "˚";
+                  tempContainer.appendChild(temp);
+                  flexMain.appendChild(tempContainer);
+                  results.appendChild(flexMain);
                   break;
                 case "temp_max":
-                    main.innerHTML+="Max Temperature: " + outerIndex[inner] + "˚<br>";
+                  main.innerHTML+="Max Temperature: " + outerIndex[inner] + "˚<br>";
                   break;
                 case "temp_min":
-                    main.innerHTML+="Min Temperature: " + outerIndex[inner] + "˚<br>";
+                  main.innerHTML+="Min Temperature: " + outerIndex[inner] + "˚<br>";
                   break;
                 case "humidity":
-                    main.innerHTML+="Humidity: " + outerIndex[inner] + "˚<br>";
+                  main.innerHTML+="Humidity: " + outerIndex[inner] + "˚<br>";
                   break;
                 default:
                   break;
-              }
-            }
+              } //end switch
+            } //end for
           break;
+
         case "name":
           var name = document.createElement('div');
           name.id="nameid";
@@ -213,17 +272,14 @@ function determineBackground(response){
           add.className="glyphicon glyphicon-heart";
           add.innerText = "Favorite"
           flexMain.appendChild(add);
+
           add.addEventListener("click", function(){
-            console.log("ADD TO FAVS BUTTON PLACE WAS PRESSED");
             var parent = $(this).parent();
-            console.log("parent in fav is", parent);
             locatName = parent[0].children[1].children[0].childNodes[0].data;
-            console.log("locat", locatName);
 
             var dataPlace = {
               name: locatName
             }
-            console.log("data in fav places", dataPlace);
 
             $.ajax({
               url: url + '/places/favorites',
@@ -235,6 +291,7 @@ function determineBackground(response){
             }); // end ajax
           }); // end add btn
           break;
+
         case "weather":
           var weather = document.createElement('div');
           weather.innerHTML = "<br>"+"<b>"+ "Description" + ":</b><br>";

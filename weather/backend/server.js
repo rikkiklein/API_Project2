@@ -42,6 +42,63 @@ app.get('/images', function(req, response) {
   response.json({ "description" : "IMAGES ENDPOINT"});
 });
 
+app.get('/images/favorites', function(req, response){
+  console.log("req.body");
+  console.log(req.body);
+  db.collection(IMAGES_COLLECTION).find().toArray(function(err, docs){
+    if(err){
+      console.log(err);
+    }
+    else {
+      console.log(docs);
+      response.send(docs);
+    }
+  });
+});
+
+app.delete('/places/favorites', function(req, response){
+  console.log("req.body");
+  console.log(req.body);
+  db.collection(PLACES_COLLECTION).remove(),function(err, docs){
+    if(err){
+      console.log(err);
+    }
+    else {
+      console.log(docs);
+      response.send(docs);
+    }
+  }
+});
+
+
+app.delete('/images/favorites', function(req, response){
+  console.log("req.body");
+  console.log(req.body);
+  db.collection(IMAGES_COLLECTION).remove(),function(err, docs){
+    if(err){
+      console.log(err);
+    }
+    else {
+      console.log(docs);
+      response.send(docs);
+    }
+  }
+});
+
+app.get('/places/favorites', function(req, response){
+  console.log("req.body");
+  console.log(req.body);
+  db.collection(PLACES_COLLECTION).find().toArray(function(err, docs){
+    if(err){
+      console.log(err);
+    }
+    else {
+      console.log(docs);
+      response.send(docs);
+    }
+  });
+});
+
 /* places search weather*/
 app.post('/places/search', function(req, res) {
   var baseUrl = "http://api.openweathermap.org/data/2.5/weather";
@@ -87,19 +144,26 @@ app.post('/places/favorites', function(req, res){
   console.log("req.body", req.body);
   var newFav = req.body;
   console.log("newFav", newFav);
-
-  db.collection(PLACES_COLLECTION).insertOne(newFav, function (err, result) {
-    if (err) {
-      console.log(err);
-      res.json("error");
-    } else {
-      console.log('Inserted.');
-      console.log('RESULT!!!!', result);
-      console.log("end result");
-      res.json(result);
+  //CHECK FOR DUPLICATES TO PREVENT REDUNDANT DATA
+  //console.log("newFav.requestParams", newFav.params);
+  //
+  db.collection(PLACES_COLLECTION).find(newFav).toArray(function(err, docs){
+    console.log("docs", docs);
+    if(docs.length<1){
+      db.collection(PLACES_COLLECTION).insertOne(newFav, function (err, result) {
+        if (err) {
+          console.log(err);
+          res.json("error");
+        } else {
+          console.log('Inserted.');
+          console.log('RESULT!!!!', result);
+          console.log("end result");
+          res.json(result);
+        }
+      });
     }
-  });
-});
+  })
+}); //end app.post
 
 
 app.post('/images/favorites', function(req, res){
@@ -108,16 +172,20 @@ app.post('/images/favorites', function(req, res){
   var newFav = req.body;
   console.log("newFav", newFav);
   console.log("################################");
-
-  db.collection(IMAGES_COLLECTION).insertOne(newFav, function (err, result) {
-    if (err) {
-      console.log(err);
-      res.json("error");
-    } else {
-      console.log('Inserted.');
-      console.log('RESULT!!!!', result);
-      console.log("end result");
-      res.json(result);
-    }
-  });
-});
+  db.collection(IMAGES_COLLECTION).find(newFav).toArray(function(err, docs){
+    console.log("docs", docs);
+    if(docs.length<1){
+      db.collection(IMAGES_COLLECTION).insertOne(newFav, function (err, result) {
+        if (err) {
+          console.log(err);
+          res.json("error");
+        } else {
+          console.log('Inserted.');
+          console.log('RESULT!!!!', result);
+          console.log("end result");
+          res.json(result);
+        }
+      }); // end insert
+    } // end if
+  }); // end check
+}); // end post
