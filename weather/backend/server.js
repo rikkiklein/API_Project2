@@ -7,8 +7,28 @@ var app         = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
-var MongoClient = mongodb.MongoClient;
-var mongoUrl = 'mongodb://localhost:27017/weather';
+app.use(bodyParser.json());
+
+var IMAGES_COLLECTION = "images";
+var PLACES_COLLECTION = "places";
+
+var url = 'mongodb://localhost:27017/weather_api';
+
+mongodb.MongoClient.connect(process.env.MONGODB_URI || url, function (err, database) {
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
+
+  db = database;
+  console.log("Database connection ready");
+
+  var server = app.listen(process.env.PORT || 3000, function () {
+    var port = server.address().port;
+    console.log("App now running on port", port);
+  });
+});
+
 
 app.get('/', function(request, response){
   response.json({"description":"Welcome to this AWESOME WEATHER API!"});
@@ -16,12 +36,10 @@ app.get('/', function(request, response){
 
 app.get('/places', function(req, response) {
   response.json({ "description" : "WEATHER ENDPOINT"});
-  console.log("places");
 });
 
 app.get('/images', function(req, response) {
   response.json({ "description" : "IMAGES ENDPOINT"});
-  console.log("images");
 });
 
 /* places search weather*/
@@ -30,12 +48,10 @@ app.post('/places/search', function(req, res) {
   var tsQueryString = '?q=';
   var apiKeyQueryString = "&appid=";
   var WEATHER_KEY=process.env.WEATHER_KEY;
-  console.log(WEATHER_KEY, "weather");
   var queryString = req.body.queryString;
   var metric = "&units=metric";
   var imperial = "&units=imperial";
   var fullQuery = baseUrl + tsQueryString + queryString + imperial + apiKeyQueryString + WEATHER_KEY;
-  console.log("fullQuery:", fullQuery); // prints to terminal
 
   request({
     url: fullQuery,
@@ -50,19 +66,13 @@ app.post('/places/search', function(req, res) {
 //image search
 app.post('/images/search', function(req, res){
   var baseURL = "https://pixabay.com/api/"
-  console.log("IN POST IMAGES");
-  console.log("BURL", baseURL);
   var key = "?key=";
   var PIX_KEY=process.env.PIX_KEY;
-  console.log(PIX_KEY, "pixkey");
   var qString = "&q=";
   var queryString = req.body.queryString;
-  console.log(queryString, "QS");
   var image_type = "&image_type=photo&pretty=true";
   var cat = "&category=places";
-
   var fullQuery = baseURL + key + PIX_KEY + qString + queryString + image_type + cat;
-  console.log("FQ", fullQuery);
   request({
     url: fullQuery,
     method: 'GET',
@@ -71,12 +81,43 @@ app.post('/images/search', function(req, res){
     }
   })
 });
+
+app.post('/places/favorites', function(req, res){
+  console.log("go into database");
+  console.log("req.body", req.body);
+  var newFav = req.body;
+  console.log("newFav", newFav);
+
+  db.collection(PLACES_COLLECTION).insertOne(newFav, function (err, result) {
+    if (err) {
+      console.log(err);
+      res.json("error");
+    } else {
+      console.log('Inserted.');
+      console.log('RESULT!!!!', result);
+      console.log("end result");
+      res.json(result);
+    }
+  });
+});
+
+
 app.post('/images/favorites', function(req, res){
   console.log("go into database");
-})
+  console.log("req.body", req.body);
+  var newFav = req.body;
+  console.log("newFav", newFav);
+  console.log("################################");
 
-
-/* tell our app where to listen */
-app.listen(3000, function(){
-  console.log('listen to events on a "port".')
+  db.collection(IMAGES_COLLECTION).insertOne(newFav, function (err, result) {
+    if (err) {
+      console.log(err);
+      res.json("error");
+    } else {
+      console.log('Inserted.');
+      console.log('RESULT!!!!', result);
+      console.log("end result");
+      res.json(result);
+    }
+  });
 });

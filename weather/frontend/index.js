@@ -12,15 +12,16 @@ window.onload = function() {
   var tempContainer       = document.getElementById("results-temp");
   var flexMain            = document.getElementById("flex-main");
   var desMainContainer    = document.getElementById("results-desMain");
-  console.log("FLEX", flexMain);
   var highestLikes = 0;
   var highestLikesUrl = "";
   var highestFavs = 0;
   var highestFavsUrl = "";
   var url = 'http://localhost:3000';
+  var locatName;
 
   function hide(){
     results.style.display = "none";
+    results.innerHTML = "";
     backgrounds.style.display = "none";
   }
 
@@ -37,6 +38,7 @@ window.onload = function() {
     location.reload();
   })
   searchBtn.addEventListener('click', function(ev) {
+    hide();
     show();
     ev.preventDefault();
     backgrounds.innerHTML = "";
@@ -163,6 +165,9 @@ function determineBackground(response){
   }
 
   function display(response){
+    hide();
+    show();
+
     for(var key in response){
       switch (key) {
         case "main":
@@ -203,6 +208,32 @@ function determineBackground(response){
           flexMain.appendChild(nameContainer);
           results.appendChild(flexMain);
           name.innerHTML +=response[key];
+          var add = document.createElement("button");
+          add.id = "add";
+          add.className="glyphicon glyphicon-heart";
+          add.innerText = "Favorite"
+          flexMain.appendChild(add);
+          add.addEventListener("click", function(){
+            console.log("ADD TO FAVS BUTTON PLACE WAS PRESSED");
+            var parent = $(this).parent();
+            console.log("parent in fav is", parent);
+            locatName = parent[0].children[1].children[0].childNodes[0].data;
+            console.log("locat", locatName);
+
+            var dataPlace = {
+              name: locatName
+            }
+            console.log("data in fav places", dataPlace);
+
+            $.ajax({
+              url: url + '/places/favorites',
+              method: 'POST',
+              data: dataPlace,
+              dataType: 'json'
+            }).done(function(response) {
+              console.log( "response: from adding to favorites places", response );
+            }); // end ajax
+          }); // end add btn
           break;
         case "weather":
           var weather = document.createElement('div');
