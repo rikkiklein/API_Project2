@@ -14,7 +14,6 @@ app.get('/', function(request, response){
   response.json({"description":"Welcome to this AWESOME WEATHER API!"});
 });
 
-
 app.get('/places', function(req, response) {
   response.json({ "description" : "WEATHER ENDPOINT"});
   console.log("places");
@@ -25,8 +24,6 @@ app.get('/images', function(req, response) {
   console.log("images");
 });
 
-
-
 /* places search weather*/
 app.post('/places/search', function(req, res) {
   var baseUrl = "http://api.openweathermap.org/data/2.5/weather";
@@ -36,9 +33,8 @@ app.post('/places/search', function(req, res) {
   console.log(WEATHER_KEY, "weather");
   var queryString = req.body.queryString;
   var metric = "&units=metric";
-
-  var fullQuery = baseUrl + tsQueryString + queryString + metric + apiKeyQueryString + WEATHER_KEY;
-
+  var imperial = "&units=imperial";
+  var fullQuery = baseUrl + tsQueryString + queryString + imperial + apiKeyQueryString + WEATHER_KEY;
   console.log("fullQuery:", fullQuery); // prints to terminal
 
   request({
@@ -75,7 +71,9 @@ app.post('/images/search', function(req, res){
     }
   })
 });
-
+app.post('/images/favorites', function(req, res){
+  console.log("go into database");
+})
 
 
 /* tell our app where to listen */

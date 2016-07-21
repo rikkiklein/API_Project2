@@ -3,15 +3,9 @@ body{
   display: block;
   justify-content: center;
   font-family: helvetica;
-  background: #948E99; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #948E99 , #2E1437); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #948E99 , #2E1437); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
-  background: #485563; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #485563 , #29323c); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #485563 , #29323c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background: #485563;
+  background: -webkit-linear-gradient(to left, #485563 , #29323c);
+  background: linear-gradient(to left, #485563 , #29323c);
 }
 
 h2{
@@ -43,11 +37,9 @@ input{
   color: gray;
   border: 1px solid transparent;
   border-radius: 5px 0px 0px 5px;
-   border-top: 3px solid rgba(255,255,255, .3);
-   border-bottom: 3px solid rgba(255,255,255, .3);
-   border-left:  1px solid rgba(255,255,255, .3);
-
-
+  border-top: 3px solid rgba(255,255,255, .3);
+  border-bottom: 3px solid rgba(255,255,255, .3);
+  border-left:  1px solid rgba(255,255,255, .3);
 }
 
 label{
@@ -63,7 +55,8 @@ img{
   border: 3px solid rgba(255,255,255, .513);
  }
 
-#backgrounds, #results{
+#backgrounds,
+#results{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -86,8 +79,6 @@ img{
   border: 2px solid rgba(255,255,255, .64);
   border-radius: 5px;
   background: rgba(255,255, 255, .4);
-
-
 }
 
 #search-glass{
@@ -101,11 +92,9 @@ img{
   cursor: pointer;
   background: gray;
   border-radius: 0px 5px 5px 0px;
-   border-bottom: 1px solid rgba(255,255,255, .3);
-   border-top: 2px solid rgba(255,255,255, .3);
-   border-right:  1px solid rgba(255,255,255, .3);
-
-
+  border-bottom: 1px solid rgba(255,255,255, .3);
+  border-top: 2px solid rgba(255,255,255, .3);
+  border-right:  1px solid rgba(255,255,255, .3);
 }
 
 button{
@@ -120,13 +109,11 @@ button{
   width: 45%;
   font-size: .7em;
   color: gray;
-
 }
 
 button:hover{
     border: 1px solid #ff6666;
     background: rgba(255,255,255, .97);
-
 }
 
 .wrapper{
@@ -137,8 +124,6 @@ button:hover{
 .left, .right{
   text-align: center;
   color: white;
-  /*display: flex;
-  flex-wrap: wrap;*/
 }
 
 .left{
@@ -147,9 +132,7 @@ button:hover{
   padding-top: 10em;
   height: 100vh;
   border-right: 1px solid rgba(255,255,255,.897);
-
 }
-
 
 .right{
   width: 80vw;
@@ -165,7 +148,57 @@ button:hover{
 	background-image: linear-gradient(to top, rgba(66, 66, 66, 0.65417), rgba(66, 66, 66, 0.65417)), url("back.jpg");
 }
 
-#home{
+#home,
+#favs-place,
+#favs-image{
   cursor: pointer;
-  window.onload();
+}
+
+#home:hover,
+#favs-place:hover,
+#favs-image:hover{
+  color: #ff6666;
+}
+
+#results{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 2em;
+}
+
+#weatherid{
+  order: 1;
+  font-size: 1.2em;
+  padding: 1em;
+  margin-right: 4em;
+}
+
+#flex-main{
+  order: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+#results-name{
+  font-size: 3em;
+  text-transform: uppercase;
+}
+
+#tempid{
+  font-size: 6em;
+  font-weight: bold;
+}
+
+#mainid{
+  order: 3;
+  width: 25%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2em;
+  margin-left: 3em;
+  padding: 1em;
+  padding-top: 1.5em;
+  text-align: center;
 }
